@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+  <style>
+        .outerBorder-instruct {
+            position: absolute;
+            display: flex;
+            border: 2px solid #fff;
+            width: 95%;
+            top: 2.5%;
+            border-radius: 3rem;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .glowing-circle {
+
+            -webkit-animation: glowing 1s ease-in-out infinite alternate;
+            -moz-animation: glowing 1s ease-in-out infinite alternate;
+            animation: glowing 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowing {
+          from {
+            box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #ffffff,
+              0 0 4px rgba(0, 0, 0, 0), 0 0 5px #ffffff,
+              0 0 6prgba (0, 0, 0, 0) F0, 0 0 7px #ffffff;
+          }
+    
+          to {
+            box-shadow: 0 0 2px #ffffff, 0 0 3px #ffffff, 0 0 4px #ffffff,
+              0 0 5px #ffffff, 0 0 6px #ffffff, 0 0 7px #ffffff, 0 0 8px #ffffff;
+          }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            font-family : Montserrat;
+            color : white;
+        }
+
+        .containerinstructionpage-1 {
+            height: cover;
+            top:4.5rem;
+            position: relative;
+            padding-bottom: 10rem;
+            margin-bottom: 3rem;
+        }
+        .containerinstructionpage-2{
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .continstructionpage {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .logo-imageinstructionpage {
+            position: absolute;
+            width: 7rem;
+            height: auto;
+            top: 1rem;
+            left: 1rem;
+        }
+
+        .main-headinginstructionpage {
+            border-style: solid;
+            border-width: 1;
+            border-color: #fff;
+            border-radius: 30px;
+            padding: 10px 25px;
+            position: relative;
+            top: 2rem;
+            font-size: 40px;
+            color: rgb(77, 150, 233);
+            background-color: rgba(83, 174, 219, 0.155);
+            text-align: center;
+            font-family : MonsOlympia;
+            letter-spacing : 5px;
+        }
+        .txtOnImage{
+          position: absolute; 
+          top: 45%; 
+          left: 45%; 
+          transform: translate(-50%, -50%); 
+          color: white; 
+          font-size: 2rem; 
+          margin-left: 5rem;
+          text-align: center;
+          font-family: moto;
+          letter-spacing: 0.5em;
+        }
+
+        .headerImg{
+          width: 30rem;
+        }
+
+        .parainstructionpage {
+            color: white;
+            font-size: 20px;
+        }
+
+        li{
+            font-size: 20px;
+        }
+
+        .slotBlock{
+            padding : 8px 20px;
+        }
+
+        .slotBlock li{
+            color:white;
+            font-size: 18px;
+        }
+
+        .rulesHeader{
+            margin-top : 3rem;
+            margin-bottom : 3rem;
+        }
+
+        .main-headinginstructionpage1 {
+            border-style: solid;
+            border-width: 1;
+            border-color: rgba(98, 159, 228, 0.781);
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 40px;
+            border-left-style: none;
+            color: rgb(77, 150, 233);
+            background-color: rgba(83, 174, 219, 0.155);
+            text-align: center;
+            align-self: flex-end;
+            font-family : MonsOlympia;
+            letter-spacing : 5px;
+        }
+        
+        {% comment %} back button {% endcomment %}
+    .backButton{
+        position: absolute;
+        border: 2px solid #fff;
+        font-family: moto;
+        border-radius: 1rem;
+        font-size: 1.5rem;
+        padding: 0px 10px;
+        right:1.5%;
+        top:2%;
+        color: #fff;
+        background-color:#0000004d;
+        text-align: center;
+    }
+
+    .backButton:hover{
+        background-color:white;
+        transform: scale(1.1);
+    }
+
+    .glowing-circle-backButton {
+    
+        -webkit-animation: glowing 2s ease-in-out infinite alternate;
+        -moz-animation: glowing 2s ease-in-out infinite alternate;
+        animation: glowing 2s ease-in-out infinite alternate;
+    }
+
+    .cont{
+        height: 0px;
+        margin-bottom: 8rem;
+    }
+    {% comment %}  {% endcomment %}
+   
+        /* For mobile */
+
+        @media screen and (max-width: 600px) {
+            .backButton{
+                right:1.7rem;
+                top:1.7rem;
+            }
+            
+            .logo-imageinstructionpage {
+                position: absolute;
+                width: 5rem;
+                height: auto;
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .main-headinginstructionpage {
+                border-style: solid;
+                border-width: 1;
+                border-color: rgba(98, 159, 228, 0.781);
+                border-radius: 30px;
+                padding: 10px 20px;
+                position: relative;
+                top: 4rem;
+                font-size: 30px;
+                border-left-style: none;
+                font-family : MonsOlympia;
+                color: rgb(77, 150, 233);
+                background-color: rgba(83, 174, 219, 0.155);
+                text-align: center;
+            }
+
+            .main-headinginstructionpage1 {
+                font-size: 25px;
+            }
+
+            .containerinstructionpage-2{
+                margin-left : 10px;
+            }
+
+            .parainstructionpage {
+                color: white;
+                padding-top : 0.4rem;
+                font-size: 18px;
+            }
+
+            .parainstructionpageRules{
+                padding-top : 0rem;
+            }
+
+            li{
+                font-size: 18px;
+            }
+    
+
+            .containerinstructionpage-1 {
+                margin: 0px;
+                margin-bottom: 3rem;
+            }
+            .txtOnImage{
+              position: absolute; 
+              top: 45%; 
+              left: 45%; 
+              transform: translate(-50%, -50%); 
+              color: white; 
+              font-size: 1.2rem; 
+              margin-left: 3rem;
+              text-align: center;
+              font-family: moto;
+              letter-spacing: 0.5em;
+            }
+    
+            .headerImg{
+              width: 20rem;
+            }
+        }
+    </style>
+
+    <div class="outerBorder-instruct glowing-circle">
+        {% if user.is_anonymous %}
+            <a href="{% url 'cit2020:index' %}"><button type="button" class="btn backButton glowing-circle-backButton"><</button></a>
+        {% else %}    
+            <a href="{% url 'cit2020:navPage' %}"><button type="button" class="btn backButton glowing-circle-backButton"><</button></a>
+        {% endif %}
+        <a href="{% url 'cit2020:navPage' %}"><img class="logo-imageinstructionpage" src="{% static './Assets/whiteIste.png'%}" /></a>
+        <div class="container containerinstructionpage-1">
+          <div style="position: relative; text-align: center;">
+            <img class="headerImg" src="{% static "./Assets/title.png" %}" alt="About">
+            <div class="txtOnImage">About&nbsp;&nbsp;?</div>
+         </div>
+          <div class="containerinstructionpage-2">
+            <p class="parainstructionpage">
+            <h1 style="font-family: ethno;">Cognitive Intelligence Test 9.0</h1>
+            <p>CIT 9.0 is one-of-a-kind opportunity for all aspiring students as we unveil exhilarating challenges of national standard over the realms of basic mathematical aptitude, logical & verbal reasoning, and data interpretation. Not only does CIT implant an idea of various acclaimed aptitude tests like CAT, but our flagship event also never fails to provide a simulation of the overall screening procedure of the hiring companies. This is the most anticipated online event to compete for intellectual glory among multitude of striving contestants.</p>
+            <br>
+            <br>
+            <h2 style="font-family: ethno;">Schedule For CIT 9.0</h2>
+            <h6 style="font-family: ethno;">Preliminary Round:</h6> Candidates can attempt CIT only once in any of the 2 available slots:
+            <li><b>Slot 1:</b> January 17, 2026 (7:30 PM - 8:15 PM)</li>
+            <li><b>Slot 2:</b> January 18, 2026 (10:00 AM - 10:45 AM)</li>
+            <li><b>Slot 3:</b> January 18, 2026 (7:30 PM - 8:15 PM)</li>
+            <h6 style="font-family: ethno;">Final Round:</h6> Candidates selected for final round will receive a mail with details
+            <li><b>Final:</b> January 19, 2026</li>
+            <br>
+            <br> 
+            </p>
+            <div class="prize-section">
+              <h2 style="font-family: ethno;"><strong>Cash PRIZES worth 8K For CIT 9.0</strong>
+              {% comment %} <img src="{% static 'Assets/ims.png'%}" alt="PRIZES"> {% endcomment %}
+            </div>
+            <br>
+            <br>
+            <div style="font-family: ethno;">
+              <h2>EVENT SPONSORS</h2><br>
+              {% comment %} <h2>TITLE SPONSOR</h2> <br> {% endcomment %}
+                <img src="{% static 'Assets/ims.png'%}" alt="IMS" style="margin-right: 10px; margin-bottom: 1rem; padding-bottom: 0; border-radius: 15px;">
+                
+                {% comment %} <h2>EDUCATIONAL PARTNER</h2><br> {% endcomment %}
+                <img src="{% static 'Assets/techbairn.png'%}" alt="TECH_BAIRN" style="width:20rem;margin-right: 10px; padding-bottom: 0; border-radius: 15px;">
+                {% comment %} <img src="{% static 'Assets/iocl.png'%}" alt="IOCL"
+                style="padding-bottom: 0; border-radius: 15px; margin-right: 10px;"> {% endcomment %}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

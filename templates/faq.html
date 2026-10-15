@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FAQ | CIT 9.0</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    /* BACKGROUND */
+    .bg {
+      min-height: 100vh;
+      background: url("{% static 'Assets/bg25latest.png' %}") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .faq-wrapper {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .left-panel {
+      width: min(350px, 90vw);
+      background: #9a9eb5;
+      border-radius: 20px;
+      border: 3px solid #000;
+      box-shadow: 6px 6px 14px rgba(0, 0, 0, 0.55);
+      padding: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .left-panel h1 {
+      font-style: italic;
+      font-size: clamp(26px, 4vw, 34px);
+      letter-spacing: 2px;
+      text-align: center;
+      color: #fff;
+      font-weight: 800;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    .inner-card {
+      background: #6f7391;
+      padding: 40px;
+      border-radius: 30px;
+      display: flex;
+      gap: 30px;
+      position: relative;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    /* FAQ ITEM */
+    .faq-item {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .faq-pill {
+      font-family: "Source Serif 4", serif;
+      background: #d9d9d9;
+      border: 2px solid #000;
+      border-radius: 999px;
+      padding: 16px 28px;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 7px 0 rgba(0, 0, 0, 0.6);
+      transition: all 0.25s ease;
+    }
+
+    .faq-pill:hover {
+      transform: translateY(-3px);
+    }
+
+    .faq-pill.active {
+      background: #cfd2ff;
+    }
+
+    .faq-answer {
+      display: none;
+      margin-top: 10px;
+      padding: 18px 22px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      border: 2px solid #000;
+      font-size: 16px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .student-img {
+      position: absolute;
+      bottom: -60px;
+      left: -180px;
+      width: clamp(180px, 25vw, 300px);
+    }
+
+    @media (max-width: 1024px) {
+      .inner-card {
+        flex-direction: column;
+        align-items: center;
+      }
+      .student-img {
+        position: static;
+        margin-top: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="bg">
+  <div class="faq-wrapper">
+
+    <div class="left-panel">
+      <h1>FREQUENTLY<br>ASKED<br>QUESTIONS</h1>
+    </div>
+
+    <div class="inner-card">
+      <img src="{% static 'Assets/student.png' %}" alt="Student" class="student-img">
+
+      <div class="right-panel">
+
+        <div class="faq-item">
+          <div class="faq-pill">What is CIT?</div>
+          <div class="faq-answer">
+   CIT (Cognitive Intelligence  Test) is ISTE’s flagship competition designed to test creativity, logical thinking, and problem-solving skills beyond textbooks.
+
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-pill">Where will the test be conducted?</div>
+          <div class="faq-answer">
+            The test will be conducted completely online and can be attempted from anywhere.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-pill">How will the test be conducted?</div>
+          <div class="faq-answer">
+            The competition consists of multiple rounds with MCQs and analytical challenges.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-pill">How will the competition be structured?</div>
+          <div class="faq-answer">
+            CIT is structured in elimination rounds, with each round testing higher-order skills.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-pill">Is there any prize money?</div>
+          <div class="faq-answer">
+            Yes, winners will receive exciting prizes, certificates, and recognition.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-pill">How will it benefit me?</div>
+          <div class="faq-answer">
+            Participants gain national exposure, certificates, skill validation, and learning experience.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const pills = document.querySelectorAll(".faq-pill");
+
+  pills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      const answer = pill.nextElementSibling;
+
+      document.querySelectorAll(".faq-answer").forEach(a => {
+        if (a !== answer) a.style.display = "none";
+      });
+
+      document.querySelectorAll(".faq-pill").forEach(p => {
+        if (p !== pill) p.classList.remove("active");
+      });
+
+      const isOpen = answer.style.display === "block";
+      answer.style.display = isOpen ? "none" : "block";
+      pill.classList.toggle("active", !isOpen);
+    });
+  });
+</script>
+
+</body>
+</html>

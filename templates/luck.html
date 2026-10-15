@@ -1,0 +1,169 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<style>
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Poppins', sans-serif;
+          letter-spacing: 1.5px;
+          background-color: #111341;
+          background-image: url("{% static 'Assets/bg25latest.png' %}");
+          background-size: 100% 100%;
+      }
+
+      .bg-container {
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .outerBorder {
+          width: 90%;
+          max-width: 900px;
+          padding: 2rem;
+          border: 2px solid #fff;
+          border-radius: 1.5rem;
+          background-color: #22254a; /* Flat background color */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          animation: fadeInScale 1s ease-out forwards;
+      }
+      @keyframes fadeInScale {
+      0% {
+          opacity: 0; /* Start invisible */
+          transform: scale(0.95); /* Slightly smaller */
+      }
+      100% {
+          opacity: 1; /* Fully visible */
+          transform: scale(1); /* Original size */
+      }
+  }
+
+
+
+      .image {
+          position: absolute;
+          width: 11rem;
+          height: auto;
+          top: 1rem;
+          left: 1rem;
+      }
+
+      .backButton {
+          position: absolute;
+          top: 5%;
+          right: 5%;
+          border: 2px solid #fff;
+          background: rgba(0, 0, 0, 0.3);
+          color: white;
+          font-size: 1.5rem;
+          padding: 0.5rem 1rem;
+          border-radius: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+      }
+
+      .backButton:hover {
+          background-color: #fff;
+          color: #000;
+          transform: scale(1.1);
+      }
+
+      .content h2 {
+          color: white;
+          margin: 1.5rem 0;
+          font-size: 1.8rem;
+      }
+
+      .content .score,
+      .content .score-text,
+      .content .encouragement {
+          margin-bottom: 2rem; /* Add margin-bottom for spacing */
+      }
+
+      .content h2 span {
+          color: #4ecdc4;
+      }
+
+      @media screen and (max-width: 768px) {
+          .outerBorder {
+              padding: 1.5rem;
+          }
+
+          .backButton {
+              font-size: 1.2rem;
+              padding: 0.4rem 0.8rem;
+          }
+
+          .content h2 {
+              font-size: 1.5rem;
+          }
+
+          .content .score,
+          .content .score-text,
+          .content .encouragement {
+              margin-bottom: 1rem;
+          }
+          .image{
+              width: 8rem;
+          }
+      }
+
+      @media screen and (max-width: 480px) {
+          .outerBorder {
+              width: 95%;
+              padding: 1rem;
+          }
+
+          .image {
+              width: 7rem;
+          }
+
+          .backButton {
+              font-size: 1.2rem;
+              {% comment %} padding: 0.3rem 0.6rem; {% endcomment %}
+          }
+
+          .content h2 {
+              font-size: 1.2rem;
+          }
+
+          .content .score,
+          .content .score-text,
+          .content .encouragement {
+              margin-bottom: 0.8rem;
+          }
+      }
+</style>
+
+<div class="bg-container">
+  <a href="{% url 'cit2020:index' %}">
+    <button type="button" class="btn backButton"><</button>
+  </a>
+  <img class="image" src="{% static './Assets/whiteIste.png' %}" alt="Logo" />
+  <div class="outerBorder">
+    <div class="content">
+      <h2 class="encouragement">
+        <strong>You Have Not Qualified For the Final Round</strong>
+      </h2>
+      <h2 class="score-text">
+        <strong
+          >Your score is <span>{{ player.score }}</span>, which is less than the
+          cutoff.
+        </strong>
+      </h2>
+      <h2 class="score">
+        <strong>Keep Practicing, Meet You In CIT 10.0</strong>
+      </h2>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background: url("{% static 'Assets/bg25latest.png' %}") center/cover fixed no-repeat;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ===== TOP BAR (Consistent with CIT 9.0 Templates) ===== */
+  .top-bar {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 40px;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 30px;
+    z-index: 100;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+  }
+
+  .brand img {
+    height: 36px;
+  }
+
+  .back-btn {
+    padding: 8px 22px;
+    border-radius: 30px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .back-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  /* ===== TIMER CARD (Glassmorphism) ===== */
+  .timer-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .timer-card {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    padding: 50px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .main-heading {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  #demo {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #7de0ff; /* Light Blue Accent */
+    text-shadow: 0 0 20px rgba(125, 224, 255, 0.5);
+    margin: 30px 0;
+  }
+
+  .info-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 20px;
+  }
+
+  .highlight-link {
+    color: #77e6ff;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+  }
+
+  .highlight-link:hover {
+    border-bottom: 1px solid #77e6ff;
+  }
+
+  .all-the-best {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f9d342; /* Yellow Accent */
+    letter-spacing: 2px;
+    margin-top: 30px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-heading { font-size: 1.2rem; }
+    #demo { font-size: 2rem; }
+    .info-text { font-size: 0.95rem; }
+    .timer-card { padding: 30px 20px; }
+    .brand span { display: none; }
+  }
+</style>
+
+<div class="top-bar">
+  <a href="{% url 'cit2020:index' %}" class="brand">
+    <img src="{% static 'Assets/whiteIste.png' %}" alt="Logo" />
+    <span>ISTE - CIT 9.0</span>
+  </a>
+  <a href="{% url 'cit2020:index' %}" class="back-btn">← BACK TO HOME</a>
+</div>
+
+<div class="timer-wrapper">
+  {% if user and not user.is_anonymous %}
+  <div class="timer-card">
+    <h1 class="main-heading">Test Is Yet To Start</h1>
+    
+    <div id="demo">00d 00h 00m 00s</div>
+
+    <p class="info-text">
+      Register at 
+      <a href="https://unstop.com/quiz/cognitive-intelligence-test-90-nit-durgapur-1624298" class="highlight-link">Unstop</a> 
+      platform to confirm your registration.
+    </p>
+
+    <p class="info-text">
+      Read the 
+      <a href="{% url 'cit2020:rules' %}" class="highlight-link">RULES</a> 
+      carefully before starting your test.
+    </p>
+
+    <p class="all-the-best">ALL THE BEST!</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+   // Preserving your exact logic as requested
+   True = 1;
+   False = 0;
+   var countDownDate;
+   
+   if ({{player.qualified}}==true) {
+     countDownDate = new Date("Jan 18 , 2026 10:00:00").getTime();
+   }
+   else if ({{player.slot}}==1) {
+     countDownDate = new Date("Jan 17 , 2026 19:30:00").getTime();
+   }
+   else if ({{player.slot}}==2) {
+     countDownDate = new Date("Jan 18 , 2026 10:00:00").getTime();
+   }
+   else if ({{player.slot}}==3) {
+     countDownDate = new Date("Jan 18 , 2026 19:30:00").getTime();
+   }
+   else{
+     countDownDate = new Date("Jan 18 , 2026 10:00:00").getTime();
+   }
+
+  var x = setInterval(function () {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+
+      if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("demo").innerHTML = "REFRESH TO START!";
+          document.getElementById("demo").style.color = "#4ade80"; // Success Green
+      }
+  }, 1000);
+</script>
+
+{% endblock %}

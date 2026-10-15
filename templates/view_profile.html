@@ -1,0 +1,236 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% load static %}
+{% load widget_tweaks %}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Orbitron", sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        background: url("{% static 'Assets/bg25latest.png' %}") center/cover fixed no-repeat;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* ===== TOP BAR (Matching Quiz Template) ===== */
+    .top-bar {
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(12px);
+        border-radius: 40px;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 30px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        color: white;
+    }
+
+    .brand img {
+        height: 36px;
+    }
+
+    .back-btn {
+        padding: 8px 22px;
+        border-radius: 30px;
+        background: #000;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .back-btn:hover {
+        background: #fff;
+        color: #000;
+    }
+
+    /* ===== PROFILE CARD (Glassmorphism) ===== */
+    .profile-card {
+        width: 100%;
+        max-width: 1100px;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(15px);
+        border-radius: 30px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        animation: fadeInScale 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInScale {
+        0% { opacity: 0; transform: scale(0.98); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #7de0ff; /* Light Blue Accent */
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+
+    .info-group {
+        margin-bottom: 20px;
+    }
+
+    .info-label {
+        color: #7de0ff;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        margin-top: 5px;
+        opacity: 0.9;
+    }
+
+    /* ===== STATUS BOX (Glow Effect) ===== */
+    .status-container {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(125, 224, 255, 0.3);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 0 20px rgba(125, 224, 255, 0.1);
+        height: 100%;
+    }
+
+    .status-title {
+        color: #f9d342; /* Yellow Accent */
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(249, 211, 66, 0.3);
+        padding-bottom: 10px;
+    }
+
+    .highlight-text {
+        color: #4ecdc4; /* Teal Accent */
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .profile-card { padding: 25px; }
+        .section-title { font-size: 1.5rem; }
+        .top-bar { border-radius: 20px; padding: 12px; }
+        .brand span { display: none; }
+    }
+</style>
+
+<div class="top-bar">
+    <a href="{% url 'cit2020:index' %}" class="brand">
+        <img src="{% static 'Assets/whiteIste.png' %}" alt="Logo" />
+        <span>ISTE - CIT 9.0</span>
+    </a>
+    <a href="{% url 'cit2020:index' %}" class="back-btn">← BACK TO HOME</a>
+</div>
+
+<div class="profile-card">
+    <h2 class="section-title">Player Profile</h2>
+    
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-sm-6 info-group">
+                    <p class="info-label">Name</p>
+                    <p class="info-value">{{ player.name }}</p>
+                </div>
+                <div class="col-sm-6 info-group">
+                    <p class="info-label">Username</p>
+                    <p class="info-value">{{ player.userName }}</p>
+                </div>
+                <div class="col-12 info-group">
+                    <p class="info-label">Email Address</p>
+                    <p class="info-value">{{ player.email }}</p>
+                </div>
+                <div class="col-sm-6 info-group">
+                    <p class="info-label">Mobile Number</p>
+                    <p class="info-value">{{ player.mobile }}</p>
+                </div>
+                <div class="col-sm-6 info-group">
+                    <p class="info-label">Year of Study</p>
+                    <p class="info-value">{{ player.year_of_study }}</p>
+                </div>
+                <div class="col-12 info-group">
+                    <p class="info-label">Institute</p>
+                    <p class="info-value">{{ player.institute_name }}</p>
+                </div>
+                <div class="col-12 info-group">
+                    <p class="info-label">Department</p>
+                    <p class="info-value">{{ player.department }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="status-container">
+                {% if player.slot == 0 %}
+                <h3 class="status-title">Tournament Status</h3>
+                <p class="info-value">Preliminary Round: <span class="highlight-text">Not Selected</span></p>
+                <a href="{% url 'cit2020:index' %}" class="btn back-btn mt-3 d-inline-block">Select Slot</a>
+                {% else %}
+                
+                <h3 class="status-title">Preliminary Round</h3>
+                <p class="info-group">
+                    <span class="info-label">Selected Slot:</span><br>
+                    <span class="info-value">
+                        {% if player.slot == 1 %} (1) Jan 17, 2026 19:30
+                        {% elif player.slot == 2 %} (2) Jan 18, 2026 10:00
+                        {% elif player.slot == 3 %} (3) Jan 18, 2026 19:30
+                        {% endif %}
+                    </span>
+                </p>
+                <p class="info-group">
+                    <span class="info-label">Current Score:</span><br>
+                    <span class="info-value highlight-text">{{ player.score }}</span>
+                </p>
+                <p class="info-group">
+                    <span class="info-label">Qualified for Final:</span><br>
+                    <span class="info-value">
+                        {% if player.qualified == True %} <span class="highlight-text">YES</span>
+                        {% else %} <span class="text-danger">NO</span>
+                        {% endif %}
+                    </span>
+                </p>
+
+                <!-- {% if player.qualified %}
+                <h3 class="status-title mt-4">Final Round</h3>
+                <p class="info-group">
+                    <span class="info-label">Final Score:</span><br>
+                    <span class="info-value highlight-text">{{ player.final_score }}</span>
+                </p>
+                {% endif %} -->
+                
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

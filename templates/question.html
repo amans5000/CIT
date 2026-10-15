@@ -1,0 +1,288 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% load static %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background: url("{% static 'Assets/bg25latest.png' %}") center/cover fixed no-repeat;
+    color: #fff;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* Glass Navbar Style */
+  .top-bar {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 40px;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+  }
+
+  .brand img {
+    height: 36px;
+  }
+
+  .pill {
+    padding: 6px 18px;
+    border-radius: 20px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timer-pill {
+    background: linear-gradient(135deg, #7a1a59, #b02c78);
+    min-width: 120px;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(176, 44, 120, 0.4);
+  }
+
+  /* Question Area */
+  .question-card {
+    margin-top: 30px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .question-header {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #77e6ff;
+  }
+
+  .question-body {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+
+  .accuracy-text {
+    color: #4ade80;
+    font-size: 0.95rem;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+
+  /* Option Styling Logic */
+  .options-grid {
+    margin-top: 20px;
+  }
+
+  .option-item {
+    position: relative;
+    height: 100%;
+  }
+
+  .option-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-height: 80px;
+    user-select: none;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  /* Visual logic for selection */
+  .option-label:hover {
+    background: rgba(119, 230, 255, 0.1);
+    border-color: #77e6ff;
+  }
+
+  input[type="radio"]:checked + .option-label {
+    background: rgba(119, 230, 255, 0.2);
+    border-color: #77e6ff;
+    box-shadow: 0 0 20px rgba(119, 230, 255, 0.3);
+    transform: translateY(-2px);
+    font-weight: bold;
+  }
+
+  /* Footer Buttons */
+  .action-footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .btn-base {
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    border: none;
+  }
+
+  .btn-clear {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+  }
+
+  .btn-clear:hover {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  .btn-next {
+    background: #77e6ff;
+    color: #000;
+  }
+
+  .btn-next:hover {
+    background: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .action-footer { flex-direction: column; }
+    .btn-base { width: 100%; }
+    .question-card { padding: 25px; }
+  }
+</style>
+
+<div class="top-bar">
+  <div class="brand">
+    <img src="{% static 'Assets/whiteIste.png' %}" alt="Logo" />
+    <span>ISTE - CIT 9.0</span>
+  </div>
+
+  <div class="d-flex gap-2">
+    <!-- <div class="pill">SECTION</div> -->
+    <div class="pill timer-pill" id="demo">00h 00m 00s</div>
+  </div>
+</div>
+
+<form id="ans" method="post" action="/answer/">
+  {% csrf_token %}
+  <div class="question-card container">
+    <div class="question-header">QUESTION {{ question.Q_number }}</div>
+
+    <div class="question-body">
+      {{ question.Question|safe }}
+      <div class="accuracy-text">ACCURACY: {{ question.accuracy }}%</div>
+    </div>
+
+    <div class="row g-4 options-grid">
+      <div class="col-md-6 option-item">
+        <input type="radio" name="option" value="1" id="option1" />
+        <label class="option-label" for="option1">{{ question.option1 }}</label>
+      </div>
+      <div class="col-md-6 option-item">
+        <input type="radio" name="option" value="2" id="option2" />
+        <label class="option-label" for="option2">{{ question.option2 }}</label>
+      </div>
+      <div class="col-md-6 option-item">
+        <input type="radio" name="option" value="3" id="option3" />
+        <label class="option-label" for="option3">{{ question.option3 }}</label>
+      </div>
+      <div class="col-md-6 option-item">
+        <input type="radio" name="option" value="4" id="option4" />
+        <label class="option-label" for="option4">{{ question.option4 }}</label>
+      </div>
+    </div>
+
+    <div class="action-footer">
+      <button type="button" class="btn-base btn-clear" onclick="clearSelection()">Clear Choice</button>
+      <button type="submit" class="btn-base btn-next">Next Question &rarr;</button>
+    </div>
+  </div>
+</form>
+
+<script>
+  /**
+   * SLOT-BASED TIMER LOGIC
+   * Preserves your exact dates and slot checks
+   */
+  var countDownDate;
+  
+  // Logic from your old code to determine the correct slot deadline
+  if ("{{ player.qualified }}" === "True") {
+      countDownDate = new Date("Jan 18 , 2026 10:45:00").getTime();
+  } else if ("{{ player.slot }}" == "1") {
+      countDownDate = new Date("Jan 17 , 2026 20:15:00").getTime();
+  } else if ("{{ player.slot }}" == "2") {
+      countDownDate = new Date("Jan 18 , 2026 10:45:00").getTime();
+  } else if ("{{ player.slot }}" == "3") {
+      countDownDate = new Date("Jan 18 , 2026 20:15:00").getTime();
+  } else {
+      countDownDate = new Date("Jan 18 , 2026 20:15:00").getTime();
+  }
+
+  var x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the dynamic countdown
+      document.getElementById("demo").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+
+      // AUTO-SUBMIT LOGIC: Submits the form when time hits zero
+      if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("demo").innerHTML = "TIME OVER";
+          document.getElementById("ans").submit();
+      }
+      
+      // 5-minute alert logic
+      if (hours == 0 && minutes == 5 && seconds == 0) {
+          alert("Quiz will auto-submit after 5 minutes");
+      }
+  }, 1000);
+
+  /**
+   * SELECTION CLEARING LOGIC
+   */
+  function clearSelection() {
+      // Uncheck all radio buttons
+      document.querySelectorAll("input[type='radio']").forEach(input => input.checked = false);
+  }
+</script>
+
+{% endblock %}

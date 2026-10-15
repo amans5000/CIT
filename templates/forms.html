@@ -1,0 +1,207 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* BACKGROUND & MAIN LAYOUT */
+  .bg-wrapper {
+    min-height: 100vh;
+    background: url("{% static 'Assets/bg25latest.png' %}") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* NAVBAR - Styled to match FAQ page */
+  .top-bar {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 40px;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 40px;
+    z-index: 1000;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+  }
+
+  .brand img {
+    height: 36px;
+  }
+
+  .back-btn {
+    padding: 8px 22px;
+    border-radius: 30px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .back-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  /* FORM CARD CONTAINER */
+  .form-container {
+    background: #6f7391; /* Matches FAQ inner-card */
+    padding: 50px;
+    border-radius: 30px;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 14px rgba(0, 0, 0, 0.55);
+    width: min(700px, 90vw);
+    text-align: center;
+    position: relative;
+  }
+
+  .main-heading-slot {
+    font-family: "Source Serif 4", serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  /* RADIO OPTIONS */
+  .options-block {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .opt input[type="radio"] {
+    display: none;
+  }
+
+  .opt label {
+    display: block;
+    font-family: "Source Serif 4", serif;
+    background: #d9d9d9;
+    border: 2px solid #000;
+    border-radius: 999px;
+    padding: 16px 28px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.6);
+    transition: all 0.2s ease;
+    color: #000;
+  }
+
+  .opt label:hover {
+    transform: translateY(-2px);
+    background: #e5e5e5;
+  }
+
+  .opt input[type="radio"]:checked + label {
+    background-color: #cfd2ff; /* Matches FAQ active pill */
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+  }
+
+  /* SUBMIT BUTTON */
+  .submit-wrapper {
+    margin-top: 40px;
+  }
+
+  .submitbtn {
+    padding: 12px 40px;
+    border-radius: 30px;
+    background: #000;
+    border: 2px solid white;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.3s;
+  }
+
+  .submitbtn:hover {
+    background: #fff;
+    color: #000;
+    transform: scale(1.05);
+  }
+
+  @media screen and (max-width: 600px) {
+    .form-container {
+      padding: 30px 15px;
+    }
+    .main-heading-slot {
+      font-size: 1.25rem;
+    }
+    .opt label {
+      font-size: 14px;
+      padding: 12px 20px;
+    }
+  }
+</style>
+
+<div class="bg-wrapper">
+  <nav class="top-bar">
+    <a href="{% url 'cit2020:index' %}" class="brand">
+      <img src="{% static './Assets/whiteIste.png' %}" alt="Logo" />
+      <span>ISTE - CIT 9.0</span>
+    </a>
+    <a href="{% url 'cit2020:index' %}" class="back-btn">← HOME</a>
+  </nav>
+
+  <div class="form-container">
+    <h2 class="main-heading-slot">Choose Your Slot</h2>
+
+    <form id="slot" method="post" action="/forms/">
+      {% csrf_token %}
+      <div class="options-block">
+        
+        <div class="opt">
+          <input type="radio" name="slot" value="1" id="option1" required />
+          <label for="option1">17 January 2026 (7:30 PM - 8:15 PM)</label>
+        </div>
+
+        <div class="opt">
+          <input type="radio" name="slot" value="2" id="option2" />
+          <label for="option2">18 January 2026 (10:00 AM - 10:45 AM)</label>
+        </div>
+
+        <div class="opt">
+          <input type="radio" name="slot" value="3" id="option3" />
+          <label for="option3">18 January 2026 (7:30 PM - 8:15 PM)</label>
+        </div>
+
+      </div>
+
+      <div class="submit-wrapper">
+        <input type="submit" value="Confirm Slot" class="submitbtn" />
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+<script src="https://kit.fontawesome.com/66aa7c98b3.js" crossorigin="anonymous"></script>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background: url("{% static 'Assets/bg25latest.png' %}") center/cover fixed no-repeat;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ===== TOP BAR (Matching CIT 9.0 Identity) ===== */
+  .top-bar {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 40px;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 30px;
+    z-index: 100;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+  }
+
+  .brand img {
+    height: 36px;
+  }
+
+  .back-btn {
+    padding: 8px 22px;
+    border-radius: 30px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .back-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  /* ===== CONTENT CONTAINER (Glassmorphism) ===== */
+  .section-container {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    animation: fadeInScale 0.8s ease-out forwards;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+
+  @keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .main-heading {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #7de0ff; /* Accent Light Blue */
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(125, 224, 255, 0.3);
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  .instructions, .rules {
+    list-style: none;
+    font-size: 1rem;
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  .instructions li, .rules li {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    position: relative;
+    padding-left: 25px;
+    opacity: 0.9;
+  }
+
+  /* Custom Bullet Points */
+  .instructions li::before, .rules li::before {
+    content: "•";
+    color: #7de0ff;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .slotBlock {
+    background: rgba(125, 224, 255, 0.05);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px 0 20px 25px;
+    border: 1px solid rgba(125, 224, 255, 0.1);
+  }
+
+  .slotBlock li {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .slotBlock li::before {
+    content: none;
+  }
+
+  .slotBlock b {
+    color: #f9d342; /* Yellow Accent */
+  }
+
+  .unstop-link {
+    color: #4ecdc4; /* Teal Accent */
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  /* Custom Scrollbar */
+  .section-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  .section-container::-webkit-scrollbar-thumb {
+    background: rgba(125, 224, 255, 0.3);
+    border-radius: 10px;
+  }
+
+  /* Mobile Tweaks */
+  @media screen and (max-width: 768px) {
+    .section-container { padding: 25px; width: 95%; }
+    .main-heading { font-size: 1.4rem; }
+    .top-bar { border-radius: 20px; padding: 12px; }
+    .brand span { display: none; }
+  }
+</style>
+
+<div class="top-bar">
+  <a href="{% url 'cit2020:index' %}" class="brand">
+    <img src="{% static 'Assets/whiteIste.png' %}" alt="Logo" />
+    <span>ISTE - CIT 9.0</span>
+  </a>
+  <a href="{% url 'cit2020:index' %}" class="back-btn">←BACK TO HOME</a>
+</div>
+
+<div class="section-container">
+  <h1 class="main-heading">Instructions</h1>
+  <ul class="instructions">
+    <li>
+      Register at
+      <a href="https://unstop.com/quiz/cognitive-intelligence-test-90-nit-durgapur-1624298" class="unstop-link">Unstop</a>
+      platform to confirm your registration.
+    </li>
+    <li>
+      Qualifier Round: Candidates can attempt CIT only once in any of the two available slots:
+    </li>
+    <div class="slotBlock">
+      <li><b>Slot 1:</b> January 17, 2026 (7:30 PM - 8:15 PM)</li>
+      <li><b>Slot 2:</b> January 18, 2026 (10:00 AM - 10:45 AM)</li>
+      <li><b>Slot 3:</b> January 18, 2026 (7:30 PM - 8:15 PM)</li>
+    </div>
+    <li>Qualified for the final round will be announced on Jan 18, 2026 (10:30 PM).</li>
+    <li>Candidates selected for the final round will receive an email with details.</li>
+    <li>Final Round: January 19, 2026.</li>
+  </ul>
+
+  <h1 class="main-heading">Rules</h1>
+  <ul class="rules">
+    <li>This test comprises 50 questions to be solved within a time limit of 45 minutes.</li>
+    <li>Questions cover Logical Reasoning, Verbal Reasoning, Data Interpretation, and Aptitude.</li>
+    <li>Each question carries 4 marks for the correct answer. Incorrect answers result in a deduction of 1 mark.</li>
+    <li>No marks will be awarded if a question is not attempted.</li>
+    <li>Select an option or click "Next Question" without selecting to skip.</li>
+    <li>Once you move to the next question, you cannot go back.</li>
+  </ul>
+</div>
+
+{% endblock %}

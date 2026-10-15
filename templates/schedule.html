@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Schedule | CIT 9.0</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #020328;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: url("{% static 'Assets/bg25latest.png' %}") center/cover no-repeat;
+    }
+
+    .scd-slide {
+        width: 100%;
+        max-width: 1400px;
+        min-height: 100vh;
+        padding: 40px 60px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* TITLE */
+    .scd-title {
+        margin: 0 auto 50px;
+        width: fit-content;
+        padding: 18px 70px;
+        text-align: center;
+        font-size: 38px;
+        font-weight: 900;
+        color: #ffffff;
+        background: rgba(139, 144, 168, 0.95);
+        border-radius: 50px;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    /* CONTENT */
+    .scd-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 60px;
+        color: #111;
+    }
+
+    .scd-box {
+        width: 48%;
+        background: rgba(207, 210, 223, 0.95);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .scd-box h2 {
+        font-size: 28px;
+        margin: 0 0 20px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .scd-box p {
+        font-size: 20px;
+        line-height: 1.75;
+        margin: 0;
+    }
+
+    .scd-box b {
+        font-weight: 700;
+    }
+
+    /* IMAGE — CENTER OVERLAP */
+    .scd-pic {
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: clamp(300px, 35vw, 520px);
+        z-index: 5;
+    }
+
+    .scd-pic img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+        .scd-content {
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .scd-box {
+            width: 100%;
+        }
+
+        .scd-pic {
+            position: static;
+            transform: none;
+            margin: 40px auto 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="scd-slide">
+
+    <div class="scd-title">SCHEDULE</div>
+
+    <div class="scd-content">
+        <div class="scd-box">
+            <h2>PRELIMINARY ROUND</h2>
+            <p>
+                Candidates can attempt CIT only once in any of the two available slots:
+                <br><br>
+                <b>Slot 1:</b> January 17, 2026<br>
+                <span>(7:30 PM – 8:15 PM)</span>
+                <br><br>
+                <b>Slot 2:</b> January 18, 2026<br>
+                <span>(10:00 AM – 10:45 AM)</span>
+                <b>Slot 2:</b> January 18, 2026<br>
+                <span>(7:30 PM – 8:15 PM)</span>
+            </p>
+        </div>
+
+        <div class="scd-box">
+            <h2>FINAL ROUND</h2>
+            <p>
+                Shortlisted candidates are required to submit a pitching video along with
+                a PowerPoint presentation based on the problem statements communicated
+                via email.
+            </p>
+        </div>
+    </div>
+
+    <!-- Illustration -->
+    <div class="scd-pic">
+        <img src="{% static 'Assets/pic.jpg' %}" alt="Schedule Illustration">
+    </div>
+
+</div>
+
+</body>
+</html>

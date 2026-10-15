@@ -1,0 +1,201 @@
+
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Orbitron", "Segoe UI", sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        /* Using your new high-quality background */
+        background: url("{% static 'Assets/bg25latest.png' %}") center/cover fixed no-repeat;
+        color: white;
+        overflow: hidden;
+    }
+
+    /* NAVBAR - Matching Homepage */
+    .navbar {
+        height: 70px;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+    }
+
+    .nav-logo img {
+        height: 40px;
+    }
+
+    .nav-logo span {
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 25px;
+    }
+
+    .nav-links li a {
+        cursor: pointer;
+        font-size: 14px;
+        color: white;
+        text-decoration: none;
+        opacity: 0.8;
+        transition: 0.3s;
+    }
+
+    .nav-links li a:hover {
+        opacity: 1;
+        color: #7de0ff;
+    }
+
+    /* CENTER CONTAINER */
+    .form-wrapper {
+        height: calc(100vh - 70px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    /* FORM CARD - Glassmorphism Style */
+    .form-card {
+        width: 100%;
+        max-width: 450px;
+        padding: 35px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-card h2 {
+        text-align: center;
+        margin-bottom: 5px;
+        color: #7de0ff; /* Accent color from your homepage */
+        font-size: 24px;
+        letter-spacing: 2px;
+    }
+
+    .form-card p {
+        text-align: center;
+        font-size: 13px;
+        opacity: 0.7;
+        margin-bottom: 25px;
+    }
+
+    /* INPUT STYLING - Matching the new UI */
+    .form-control-cit {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        color: white !important;
+        outline: none;
+        transition: 0.3s;
+        text-align: center;
+    }
+
+    .form-control-cit:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #1a51db;
+        box-shadow: 0 0 10px rgba(125, 224, 255, 0.3);
+        color:rgb(76, 165, 187) !important;
+        font-weight: bolder;
+    }
+
+    /* SUBMIT BUTTON */
+    .btn-register {
+        width: 100%;
+        padding: 14px;
+        border-radius: 30px;
+        border: 1px solid #7de0ff;
+        background: transparent;
+        color: #7de0ff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.4s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 10px;
+    }
+
+    .btn-register:hover {
+        background: #7de0ff;
+        color: black;
+        box-shadow: 0 0 20px rgba(125, 224, 255, 0.5);
+    }
+
+    /* Mobile Tweaks */
+    @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .form-card { padding: 25px; }
+        .navbar { padding: 0 20px; }
+    }
+</style>
+
+<nav class="navbar">
+    <a href="{% url 'cit2020:index' %}" class="nav-logo">
+        <img src="{% static './Assets/whiteIste.png' %}" alt="ISTE Logo">
+        <span>ISTE - CIT 9.0</span>
+    </a>
+   
+</nav>
+
+<div class="form-wrapper">
+    <div class="form-card">
+        <h2>REGISTRATION</h2>
+        <p>Complete your profile to participate</p>
+
+        <form id="complete_profile" method="post" action="/profile/update">
+            {% csrf_token %}
+            
+            {% render_field form.name class="form-control-cit" placeholder="Full Name" %} 
+
+            {% render_field form.userName class="form-control-cit" placeholder="Username" %}
+
+            {% render_field form.mobile class="form-control-cit" type="number" placeholder="Mobile Number" %}  
+
+            {% render_field form.institute_name class="form-control-cit" placeholder="College / School Name" %}  
+            
+            {% render_field form.department class="form-control-cit" placeholder="Department / Branch" %}
+
+            {% render_field form.year_of_study class="form-control-cit" placeholder="Year of Study (e.g. 2nd)" %} 
+
+            <button type="submit" class="btn-register">Update Profile</button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

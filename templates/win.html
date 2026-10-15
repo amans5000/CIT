@@ -1,0 +1,195 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% load static %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background: url("{% static 'Assets/bg25latest.png' %}") center/cover fixed no-repeat;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  /* ===== TOP GLASS BAR (Consistent with Quiz) ===== */
+  .top-bar {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 40px;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 100;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+  }
+
+  .brand img {
+    height: 36px;
+  }
+
+  .back-btn {
+    padding: 8px 22px;
+    border-radius: 30px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .back-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  /* ===== RESULT CARD (Glassmorphism) ===== */
+  .bg-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .result-card {
+    width: 100%;
+    max-width: 800px;
+    padding: 50px 30px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .status-header {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #7de0ff; /* Light Blue Accent */
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(125, 224, 255, 0.4);
+  }
+
+  .score-display {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .score-label {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-bottom: 5px;
+  }
+
+  .score-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #4ecdc4; /* Teal Accent from your original code */
+  }
+
+  .lboard-link-box {
+    margin-top: 20px;
+  }
+
+  .btn-lboard {
+    display: inline-block;
+    padding: 15px 40px;
+    border-radius: 50px;
+    background: #77e6ff;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.4s;
+  }
+
+  .btn-lboard:hover {
+    background: #fff;
+    box-shadow: 0 0 20px rgba(119, 230, 255, 0.6);
+    transform: translateY(-3px);
+  }
+
+  /* ===== MOBILE RESPONSIVENESS ===== */
+  @media (max-width: 768px) {
+    .status-header { font-size: 1.5rem; }
+    .score-value { font-size: 1.6rem; }
+    .top-bar { padding: 10px 15px; border-radius: 20px; }
+    .brand span { display: none; } /* Hide text on small screens */
+  }
+</style>
+
+<div class="top-bar">
+  <div class="brand">
+    <img src="{% static './Assets/whiteIste.png' %}" alt="Logo" />
+    <span>ISTE - CIT 9.0</span>
+  </div>
+  <a href="{% url 'cit2020:index' %}" class="back-btn">← BACK TO HOME</a>
+</div>
+
+<div class="bg-container">
+  <div class="result-card">
+    <h2 class="status-header">Test Completed</h2>
+    
+    <div class="score-display">
+      {% if player.qualified == True %}
+        <div class="mb-4">
+          <p class="score-label">Preliminary Round Score</p>
+          <p class="score-value">{{ player.score }}</p>
+        </div>
+        <div>
+          <p class="score-label">Final Round Score</p>
+          <p class="score-value">{{ player.final_score }}</p>
+        </div>
+      {% else %}
+        <div>
+          <p class="score-label">Your Final Score</p>
+          <p class="score-value">{{ player.score }}</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="lboard-link-box">
+      <p class="mb-3 opacity-75">Compare your performance with others</p>
+      {% if player.qualified == True %}
+        <a href="{% url 'cit2020:lboard' %}" class="btn-lboard">Global Leaderboard</a>
+      {% else %}
+        <a href="{% url 'cit2020:lboard' slot=player.slot %}" class="btn-lboard">View Rank</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

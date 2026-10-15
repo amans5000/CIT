@@ -1,0 +1,215 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  PARTICIPANT
+  ORGANIZER
+  ADMIN
+}
+
+enum RoundType {
+  PRELIMINARY
+  FINAL
+}
+
+enum AttemptStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+  DISQUALIFIED
+}
+
+model User {
+  id            String              @id @default(uuid()) @db.Uuid
+  email         String              @unique @db.VarChar(255)
+  role          Role                @default(PARTICIPANT)
+  googleId      String?             @unique @db.VarChar(255)
+  avatarUrl     String?             @db.VarChar(512)
+  isActive      Boolean             @default(true)
+  createdAt     DateTime            @default(now()) @db.Timestamptz
+  updatedAt     DateTime            @updatedAt @db.Timestamptz
+
+  profile       ParticipantProfile?
+  sessions      Session[]
+  attempts      AssessmentAttempt[]
+  auditLogs     AuditLog[]
+
+  @@index([email])
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash    String   @unique @db.VarChar(255)
+  ipAddress    String?  @db.VarChar(45)
+  userAgent    String?  @db.Text
+  expiresAt    DateTime @db.Timestamptz
+  createdAt    DateTime @default(now()) @db.Timestamptz
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@map("sessions")
+}
+
+model ParticipantProfile {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @unique @db.Uuid
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName       String   @db.VarChar(128)
+  displayName    String   @db.VarChar(128)
+  mobile         String   @db.VarChar(20)
+  instituteName  String   @db.VarChar(128)
+  department     String?  @db.VarChar(128)
+  yearOfStudy    String   @db.VarChar(32)
+  isCompleted    Boolean  @default(false)
+  createdAt      DateTime @default(now()) @db.Timestamptz
+  updatedAt      DateTime @updatedAt @db.Timestamptz
+
+  @@map("participant_profiles")
+}
+
+model Assessment {
+  id          String            @id @default(uuid()) @db.Uuid
+  title       String            @db.VarChar(128)
+  description String?           @db.Text
+  isActive    Boolean           @default(false)
+  rounds      AssessmentRound[]
+  createdAt   DateTime          @default(now()) @db.Timestamptz
+  updatedAt   DateTime          @updatedAt @db.Timestamptz
+
+  @@map("assessments")
+}
+
+model AssessmentRound {
+  id              String              @id @default(uuid()) @db.Uuid
+  assessmentId    String              @db.Uuid
+  assessment      Assessment          @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  roundType       RoundType
+  roundNumber     Int
+  positiveScore   Int                 @default(4)
+  negativeScore   Int                 @default(1)
+  durationMinutes Int                 @default(45)
+  graceSeconds    Int                 @default(30)
+  isPublished     Boolean             @default(false)
+  slots           AssessmentSlot[]
+  questions       Question[]
+  attempts        AssessmentAttempt[]
+  createdAt       DateTime            @default(now()) @db.Timestamptz
+  updatedAt       DateTime            @updatedAt @db.Timestamptz
+
+  @@unique([assessmentId, roundNumber])
+  @@map("assessment_rounds")
+}
+
+model AssessmentSlot {
+  id          String              @id @default(uuid()) @db.Uuid
+  roundId     String              @db.Uuid
+  round       AssessmentRound     @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  slotNumber  Int
+  startTime   DateTime            @db.Timestamptz
+  endTime     DateTime            @db.Timestamptz
+  capacity    Int                 @default(1000)
+  attempts    AssessmentAttempt[]
+  createdAt   DateTime            @default(now()) @db.Timestamptz
+  updatedAt   DateTime            @updatedAt @db.Timestamptz
+
+  @@unique([roundId, slotNumber])
+  @@index([startTime, endTime])
+  @@map("assessment_slots")
+}
+
+model Question {
+  id          String               @id @default(uuid()) @db.Uuid
+  roundId     String               @db.Uuid
+  round       AssessmentRound      @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  orderIndex  Int
+  promptText  String               @db.Text
+  imageUrl    String?              @db.VarChar(512)
+  options     QuestionOption[]
+  submissions QuestionSubmission[]
+  createdAt   DateTime             @default(now()) @db.Timestamptz
+  updatedAt   DateTime             @updatedAt @db.Timestamptz
+
+  @@unique([roundId, orderIndex])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id          String               @id @default(uuid()) @db.Uuid
+  questionId  String               @db.Uuid
+  question    Question             @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  optionIndex Int                  // 1, 2, 3, 4
+  optionText  String               @db.Text
+  isCorrect   Boolean              // Secret: answer key never revealed to client
+  submissions QuestionSubmission[]
+
+  @@unique([questionId, optionIndex])
+  @@map("question_options")
+}
+
+model AssessmentAttempt {
+  id              String               @id @default(uuid()) @db.Uuid
+  userId          String               @db.Uuid
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roundId         String               @db.Uuid
+  round           AssessmentRound      @relation(fields: [roundId], references: [id], onDelete: Restrict)
+  slotId          String               @db.Uuid
+  slot            AssessmentSlot       @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  status          AttemptStatus        @default(NOT_STARTED)
+  currentQuestion Int                  @default(1)
+  score           Int                  @default(0)
+  isQualified     Boolean              @default(false)
+  startedAt       DateTime?            @db.Timestamptz
+  submittedAt     DateTime?            @db.Timestamptz
+  submissions     QuestionSubmission[]
+  createdAt       DateTime             @default(now()) @db.Timestamptz
+  updatedAt       DateTime             @updatedAt @db.Timestamptz
+
+  @@unique([userId, roundId])
+  @@index([slotId, score, submittedAt])
+  @@index([roundId, isQualified, score])
+  @@map("assessment_attempts")
+}
+
+model QuestionSubmission {
+  id               String            @id @default(uuid()) @db.Uuid
+  attemptId        String            @db.Uuid
+  attempt          AssessmentAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String            @db.Uuid
+  question         Question          @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedOptionId String?           @db.Uuid
+  selectedOption   QuestionOption?   @relation(fields: [selectedOptionId], references: [id], onDelete: Restrict)
+  isCorrect        Boolean           @default(false)
+  awardedScore     Int               @default(0)
+  submittedAt      DateTime          @default(now()) @db.Timestamptz
+  timeTakenMs      Int?
+
+  @@unique([attemptId, questionId]) // Enforces idempotency and prevents race conditions
+  @@index([questionId, isCorrect])
+  @@map("question_submissions")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String?  @db.Uuid
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String   @db.VarChar(64)
+  resource   String   @db.VarChar(128)
+  details    Json?
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.Text
+  timestamp  DateTime @default(now()) @db.Timestamptz
+
+  @@index([action, timestamp])
+  @@index([userId])
+  @@map("audit_logs")
+}
