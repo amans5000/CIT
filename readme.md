@@ -1,4 +1,4 @@
-# CIT 9.0 - Secure Online Assessment Platform
+# CIT - Secure Online Assessment Platform
 
 A full-stack, proctored assessment system designed to conduct large-scale preliminary and final competitive tests. Built with a TypeScript monorepo architecture, the platform enforces strict assessment integrity, server-side validation, concurrent session tracking, and role-based administrative control.
 

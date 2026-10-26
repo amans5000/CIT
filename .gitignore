@@ -65,3 +65,5 @@ myenv/
 venv/
 staticfiles/
 staticfiles_build/
+
+everythingAboutApp.txt

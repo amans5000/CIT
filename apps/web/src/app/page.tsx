@@ -127,7 +127,7 @@ export default function HomePage(): JSX.Element {
                   The <span className="text-pink-400 font-semibold">Cognitive Intelligence Test (CIT)</span> is the flagship national-level technical assessment hosted annually by the Indian Society for Technical Education (ISTE) Students&apos; Chapter at National Institute of Technology Durgapur.
                 </p>
                 <p>
-                  Now in its 9th edition, CIT 9.0 evaluates thousands of aspiring engineers and developers across computational thinking, algorithmic intuition, discrete mathematics, system architecture, and spatial reasoning.
+                  CIT evaluates thousands of aspiring engineers and developers across computational thinking, algorithmic intuition, discrete mathematics, system architecture, and spatial reasoning.
                 </p>
               </div>
               <div>
@@ -261,7 +261,7 @@ export default function HomePage(): JSX.Element {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
               <div className="p-6 rounded-2xl bg-slate-900/40 border border-white/5">
-                <h3 className="font-semibold text-white text-base mb-2">Who is eligible to participate in CIT 9.0?</h3>
+                <h3 className="font-semibold text-white text-base mb-2">Who is eligible to participate in CIT?</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   Students enrolled in any recognized school, college, or university across India may participate. Both undergraduate and postgraduate candidates are welcome.
                 </p>
@@ -298,13 +298,13 @@ export default function HomePage(): JSX.Element {
               READY TO TEST YOUR LIMITS?
             </h2>
             <p className="text-slate-400 max-w-xl mx-auto text-sm sm:text-base font-sans mb-8">
-              Join thousands of aspiring engineers in the 9th edition of the Cognitive Intelligence Test.
+              Join thousands of aspiring engineers in the Cognitive Intelligence Test.
             </p>
             <Link
               href={user ? '/lobby' : '/login'}
               className="px-10 py-4 rounded-xl font-semibold text-sm bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-xl shadow-pink-600/40 hover:scale-[1.03] transition-all inline-flex items-center gap-2"
             >
-              {user ? 'Go to Assessment Arena' : 'Get Started with CIT 9.0'}
+              {user ? 'Go to Assessment Arena' : 'Get Started with CIT'}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -313,7 +313,7 @@ export default function HomePage(): JSX.Element {
 
       {/* Footer */}
       <footer className="glass-nav px-6 py-6 border-t border-slate-800 text-center text-xs text-slate-500 font-mono">
-        CIT 9.0 © {new Date().getFullYear()} • Indian Society for Technical Education (ISTE) Students&apos; Chapter NIT Durgapur
+        CIT © {new Date().getFullYear()} • Indian Society for Technical Education (ISTE) Students&apos; Chapter NIT Durgapur
       </footer>
     </div>
   );

@@ -25,7 +25,7 @@ export default function Navbar() {
           </div>
           <div>
             <span className="font-orbitron font-bold tracking-wider text-lg text-white block group-hover:text-pink-400 transition-colors">
-              CIT 9.0
+              CIT
             </span>
             <span className="text-xs text-slate-400 font-mono">ISTE NIT DURGAPUR</span>
           </div>
@@ -60,14 +60,6 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href="http://localhost:4000/api/docs"
-            target="_blank"
-            rel="noreferrer"
-            className="hidden sm:inline-block text-xs font-mono text-cyan-400 bg-cyan-950/40 border border-cyan-800/60 px-3 py-1.5 rounded-lg hover:bg-cyan-900/40 transition-colors"
-          >
-            OpenAPI Docs
-          </a>
 
           {user ? (
             <div className="flex items-center gap-3">

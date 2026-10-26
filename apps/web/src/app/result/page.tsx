@@ -110,7 +110,7 @@ export default function ResultPage() {
                 </h1>
                 <p className="mt-4 text-base sm:text-lg text-slate-300 font-sans max-w-xl mx-auto leading-relaxed">
                   You have cleared the preliminary cutoff and officially qualified for the{' '}
-                  <span className="text-amber-400 font-bold">CIT 9.0 Grand Finale</span>!
+                  <span className="text-amber-400 font-bold">CIT Grand Finale</span>!
                 </p>
               </div>
             ) : isSubmitted ? (
@@ -183,7 +183,7 @@ export default function ResultPage() {
       </main>
 
       <footer className="glass-nav px-6 py-4 text-center text-xs text-slate-500 font-mono">
-        CIT 9.0 Results & Qualification Engine • ISTE NIT Durgapur
+        CIT Results & Qualification Engine • ISTE NIT Durgapur
       </footer>
     </div>
   );

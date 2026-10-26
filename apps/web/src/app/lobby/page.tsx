@@ -425,7 +425,7 @@ export default function LobbyPage() {
                 className="w-4 h-4 rounded text-pink-600 focus:ring-pink-500 focus:ring-offset-0 bg-slate-800 border-white/20"
               />
               <span className="text-xs text-slate-200">
-                I have read, understood, and agreed to abide by the official CIT 9.0 examination rules.
+                I have read, understood, and agreed to abide by the official CIT examination rules.
               </span>
             </label>
 
@@ -442,7 +442,7 @@ export default function LobbyPage() {
       </main>
 
       <footer className="glass-nav px-6 py-4 text-center text-xs text-slate-500 font-mono">
-        CIT 9.0 Assessment Portal • ISTE NIT Durgapur
+        CIT Assessment Portal • ISTE NIT Durgapur
       </footer>
     </div>
   );

@@ -405,7 +405,7 @@ export default function AdminPage() {
               {isSuperAdmin ? 'SUPER ADMINISTRATOR CONSOLE' : 'STAFF / ORGANIZER PORTAL'}
             </div>
             <h1 className="font-orbitron text-2xl sm:text-3xl font-extrabold text-white">
-              CIT 9.0 MANAGEMENT SUITE
+              CIT MANAGEMENT SUITE
             </h1>
             <p className="text-xs text-slate-400 mt-1 font-mono">
               Role-governed controls for Test Slots, Students / Candidates, and Exam Questions
@@ -1402,7 +1402,7 @@ export default function AdminPage() {
       </main>
 
       <footer className="glass-nav px-6 py-4 text-center text-xs text-slate-500 font-mono">
-        CIT 9.0 Staff Governance Engine • ISTE Students&apos; Chapter NIT Durgapur
+        CIT Staff Governance Engine • ISTE Students&apos; Chapter NIT Durgapur
       </footer>
     </div>
   );

@@ -96,7 +96,7 @@ export default function LeaderboardPage() {
             HALL OF FAME & RANKINGS
           </div>
           <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold text-white tracking-wide">
-            CIT 9.0 LEADERBOARD
+            CIT LEADERBOARD
           </h1>
           <p className="mt-3 text-sm text-slate-400 font-sans max-w-xl mx-auto">
             High-concurrency Redis sorted-set rankings. Tied scores are sub-ranked by faster completion time.
@@ -338,7 +338,7 @@ export default function LeaderboardPage() {
       </main>
 
       <footer className="glass-nav px-6 py-4 text-center text-xs text-slate-500 font-mono">
-        CIT 9.0 Official Leaderboard • ISTE NIT Durgapur
+        CIT Official Leaderboard • ISTE NIT Durgapur
       </footer>
     </div>
   );

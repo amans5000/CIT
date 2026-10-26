@@ -92,14 +92,14 @@ async function bootstrap(): Promise<void> {
 
   // 7. OpenAPI / Swagger Documentation
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('CIT 9.0 Online Assessment Platform API')
-    .setDescription('Production-grade REST API for the Cognitive Intelligence Test 9.0 assessment engine.')
+    .setTitle('CIT Online Assessment Platform API')
+    .setDescription('Production-grade REST API for the Cognitive Intelligence Test assessment engine.')
     .setVersion('1.0.0')
     .addCookieAuth('cit_session', {
       type: 'apiKey',
       in: 'cookie',
       name: 'cit_session',
-      description: 'Session cookie issued upon Google OAuth authentication',
+      description: 'Session cookie issued upon authentication',
     })
     .build();
 
@@ -112,8 +112,8 @@ async function bootstrap(): Promise<void> {
 
   const port = configService.get<number>('PORT', 4000);
   await app.listen(port);
-  logger.log(`🚀 CIT 9.0 API is running on http://localhost:${port}/api/v1`);
-  logger.log(`📖 Swagger API documentation available at http://localhost:${port}/api/docs`);
+  logger.log(`CIT API is running on http://localhost:${port}/api/v1`);
+  logger.log(`Swagger API documentation available at http://localhost:${port}/api/docs`);
 }
 
 void bootstrap();

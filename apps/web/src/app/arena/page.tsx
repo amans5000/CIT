@@ -237,7 +237,7 @@ export default function ArenaPage() {
             </div>
             <div>
               <span className="font-orbitron font-bold tracking-wider text-sm sm:text-base text-white block">
-                CIT 9.0 ARENA
+                CIT ARENA
               </span>
               <span className="text-[10px] text-pink-400 font-mono tracking-widest uppercase">
                 Round 1 • Preliminary

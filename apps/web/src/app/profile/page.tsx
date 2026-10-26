@@ -122,7 +122,7 @@ export default function ProfilePage() {
             <div>
               <h2 className="font-orbitron text-lg font-bold text-white">PARTICIPANT PROFILE</h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                Official accreditation and qualification credentials for CIT 9.0
+                Official accreditation and qualification credentials for CIT
               </p>
             </div>
             {isCompleted && (
@@ -258,7 +258,7 @@ export default function ProfilePage() {
       </main>
 
       <footer className="glass-nav px-6 py-4 text-center text-xs text-slate-500 font-mono">
-        CIT 9.0 Participant Registry • ISTE NIT Durgapur
+        CIT Participant Registry • ISTE NIT Durgapur
       </footer>
     </div>
   );
