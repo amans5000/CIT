@@ -69,6 +69,8 @@ CIT/
 
 ---
 
+[![Architecture diagram of amans5000/cit](https://gitdiagram.com/amans5000/cit/diagram.png)](https://gitdiagram.com/amans5000/cit?utm_source=readme&utm_medium=picture)
+
 ## Prerequisites
 
 Before running the project locally, ensure you have the following installed:
