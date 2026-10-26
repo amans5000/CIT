@@ -80,12 +80,6 @@ Before running the project locally, ensure you have the following installed:
 
 ## Environment Setup
 
-Copy the environment template in the repository root:
-
-```bash
-cp .env.example .env
-```
-
 Configure the following key variables in `.env`:
 
 ```env
@@ -192,33 +186,6 @@ Once running, access the following endpoints:
 | Authentication Page | http://localhost:3000/login | Mock login switcher and Google OAuth |
 | Backend API Health | http://localhost:4000/api/v1/health | Database and Redis connectivity check |
 | Swagger API Docs | http://localhost:4000/api/docs | Interactive OpenAPI documentation |
-
----
-
-## Monorepo Scripts
-
-The following scripts can be executed from the root directory:
-
-```bash
-# Development
-npm run dev                  # Start both apps concurrently
-npm run dev:api              # Start API in watch mode
-npm run dev:web              # Start Next.js in dev mode
-npm run dev:services         # Start Docker containers in background
-npm run dev:services:down    # Stop Docker containers
-
-# Database Operations
-npm run db:generate          # Generate Prisma client
-npm run db:push              # Sync schema with database without migrations
-npm run db:migrate           # Apply Prisma migrations
-npm run db:seed              # Seed sample assessments, slots, and users
-
-# Build and Quality Checks
-npm run build                # Build all apps and packages
-npm run lint                 # Run ESLint across all workspaces
-npm run typecheck            # Run TypeScript typechecks across workspaces
-npm run test                 # Run test suites across workspaces
-```
 
 ---
 
