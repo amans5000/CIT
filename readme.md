@@ -94,30 +94,30 @@ PORT=4000
 FRONTEND_URL=http://localhost:3000
 
 # Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cit9_db?schema=public
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_NAME=cit9_db
-DB_PORT=5432
+DATABASE_URL=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+DB_PORT=
 
 # Redis
-REDIS_URL=redis://localhost:6379
-REDIS_HOST=localhost
-REDIS_PORT=6379
+REDIS_URL=
+REDIS_HOST=
+REDIS_PORT=
 
 # Application Secrets (generate using: openssl rand -hex 64)
-SESSION_SECRET=your_64_byte_random_session_secret
-COOKIE_SECRET=your_64_byte_random_cookie_secret
-SESSION_TTL_HOURS=24
+SESSION_SECRET=
+COOKIE_SECRET=
+SESSION_TTL_HOURS=
 
 # Google OAuth 2.0 (optional in development; mock login is available)
-GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your-client-secret
-GOOGLE_CALLBACK_URL=http://localhost:4000/api/v1/auth/google/callback
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK_URL=
 
 # Public Frontend Variables
-NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_APP_URL=
 ```
 
 ---
