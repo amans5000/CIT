@@ -62,11 +62,22 @@ export async function apiFetch<T>(
     }
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    credentials: 'include', // Includes HttpOnly session cookies
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers,
+      credentials: 'include', // Includes HttpOnly session cookies
+    });
+  } catch (err) {
+    // Network-level failure (e.g. API server unreachable)
+    throw new ApiClientError(
+      'NETWORK_ERROR',
+      'Unable to reach the API server. Please ensure the backend is running on ' +
+        API_BASE_URL.replace(/\/api\/v1$/, '') +
+        '.',
+    );
+  }
 
   let json: ApiResponse<T>;
   try {
@@ -329,15 +340,26 @@ export async function checkMyQualificationApi() {
 }
 
 // -----------------------------------------------------------------------------
-// Admin APIs
+// Admin & Staff APIs
 // -----------------------------------------------------------------------------
 
-export async function getAdminUsersApi(page = 1, limit = 20) {
+export async function getAdminUsersApi(page = 1, limit = 20, search?: string, role?: string) {
+  let url = `/admin/users?page=${page}&limit=${limit}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
+  if (role && role !== 'ALL') url += `&role=${encodeURIComponent(role)}`;
   const res = await apiFetch<{
-    items: any[];
+    items?: any[];
+    users?: any[];
     total: number;
-  }>(`/admin/users?page=${page}&limit=${limit}`);
-  return res.data;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }>(url);
+  return {
+    items: res.data?.users || res.data?.items || [],
+    total: res.data?.total || 0,
+    totalPages: res.data?.totalPages || 1,
+  };
 }
 
 export async function updateUserRoleApi(userId: string, role: UserRole) {
@@ -348,12 +370,24 @@ export async function updateUserRoleApi(userId: string, role: UserRole) {
   return res.data;
 }
 
+export async function updateAttemptStatusApi(attemptId: string, status: string) {
+  const res = await apiFetch(`/admin/attempts/${attemptId}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  });
+  return res.data;
+}
+
 export async function getAuditLogsApi(page = 1, limit = 50) {
   const res = await apiFetch<{
-    items: any[];
+    items?: any[];
+    logs?: any[];
     total: number;
   }>(`/admin/audit-logs?page=${page}&limit=${limit}`);
-  return res.data;
+  return {
+    items: res.data?.logs || res.data?.items || [],
+    total: res.data?.total || 0,
+  };
 }
 
 export async function evaluateCutoffApi(dto: {
@@ -368,6 +402,35 @@ export async function evaluateCutoffApi(dto: {
   return res.data;
 }
 
+export async function createSlotApi(
+  roundId: string,
+  dto: { slotNumber: number; startTime: string; endTime: string; capacity: number },
+) {
+  const res = await apiFetch(`/assessments/rounds/${roundId}/slots`, {
+    method: 'POST',
+    body: JSON.stringify(dto),
+  });
+  return res.data;
+}
+
+export async function updateSlotApi(
+  slotId: string,
+  dto: { slotNumber?: number; startTime?: string; endTime?: string; capacity?: number },
+) {
+  const res = await apiFetch(`/assessments/slots/${slotId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(dto),
+  });
+  return res.data;
+}
+
+export async function deleteSlotApi(slotId: string) {
+  const res = await apiFetch(`/assessments/slots/${slotId}`, {
+    method: 'DELETE',
+  });
+  return res.data;
+}
+
 export async function getAdminQuestionsApi(roundId: string) {
   const res = await apiFetch<any[]>(`/questions/round/${roundId}`);
   return res.data;
@@ -377,11 +440,35 @@ export async function createQuestionApi(dto: {
   roundId: string;
   orderIndex: number;
   promptText: string;
+  imageUrl?: string;
   options: { optionIndex: number; optionText: string; isCorrect: boolean }[];
 }) {
   const res = await apiFetch('/questions', {
     method: 'POST',
     body: JSON.stringify(dto),
+  });
+  return res.data;
+}
+
+export async function updateQuestionApi(
+  questionId: string,
+  dto: {
+    orderIndex?: number;
+    promptText?: string;
+    imageUrl?: string;
+    options?: { optionIndex: number; optionText: string; isCorrect: boolean }[];
+  },
+) {
+  const res = await apiFetch(`/questions/${questionId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(dto),
+  });
+  return res.data;
+}
+
+export async function deleteQuestionApi(questionId: string) {
+  const res = await apiFetch(`/questions/${questionId}`, {
+    method: 'DELETE',
   });
   return res.data;
 }

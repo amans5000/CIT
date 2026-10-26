@@ -47,20 +47,20 @@ async function main() {
               create: [
                 {
                   slotNumber: 1,
-                  startTime: new Date(Date.now() - 30 * 60 * 1000), // Active now for testing
-                  endTime: new Date(Date.now() + 4 * 60 * 60 * 1000),
+                  startTime: new Date('2026-10-26T10:15:00.000Z'), // 26 Oct 15:45 IST
+                  endTime: new Date('2026-10-26T11:00:00.000Z'),   // 26 Oct 16:30 IST
                   capacity: 1000,
                 },
                 {
                   slotNumber: 2,
-                  startTime: new Date(Date.now() + 6 * 60 * 60 * 1000),
-                  endTime: new Date(Date.now() + 10 * 60 * 60 * 1000),
+                  startTime: new Date('2026-10-26T10:20:00.000Z'), // 26 Oct 15:50 IST
+                  endTime: new Date('2026-10-26T11:05:00.000Z'),   // 26 Oct 16:35 IST
                   capacity: 1000,
                 },
                 {
                   slotNumber: 3,
-                  startTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
-                  endTime: new Date(Date.now() + 28 * 60 * 60 * 1000),
+                  startTime: new Date('2026-10-26T10:25:00.000Z'), // 26 Oct 15:55 IST
+                  endTime: new Date('2026-10-26T11:10:00.000Z'),   // 26 Oct 16:40 IST
                   capacity: 1000,
                 },
               ],

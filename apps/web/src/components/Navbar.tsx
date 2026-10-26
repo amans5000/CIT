@@ -51,10 +51,10 @@ export default function Navbar() {
               Lobby
             </Link>
           )}
-          {user?.role === UserRole.ADMIN && (
+          {(user?.role === UserRole.ADMIN || user?.role === UserRole.ORGANIZER) && (
             <Link href="/admin" className="text-pink-400 hover:text-pink-300 transition-colors flex items-center gap-1 font-semibold">
               <Shield className="w-4 h-4" />
-              Admin
+              {user.role === UserRole.ADMIN ? 'Admin' : 'Staff'}
             </Link>
           )}
         </nav>
@@ -84,6 +84,11 @@ export default function Navbar() {
                 {user.role === UserRole.ADMIN && (
                   <span className="px-1.5 py-0.5 rounded bg-pink-500/20 text-pink-400 text-[10px] font-mono">
                     ADMIN
+                  </span>
+                )}
+                {user.role === UserRole.ORGANIZER && (
+                  <span className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-400 text-[10px] font-mono">
+                    ORGANIZER
                   </span>
                 )}
               </Link>

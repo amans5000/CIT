@@ -2,6 +2,8 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
+  Delete,
   Body,
   Param,
   UseGuards,
@@ -10,6 +12,7 @@ import { ApiTags, ApiOperation, ApiResponse as SwaggerResponse } from '@nestjs/s
 import { AssessmentsService } from './assessments.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { CreateSlotDto } from './dto/create-slot.dto';
+import { UpdateSlotDto } from './dto/update-slot.dto';
 import { AuthGuard } from '../../common/guards/auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { CsrfGuard } from '../../common/guards/csrf.guard';
@@ -39,9 +42,9 @@ export class AssessmentsController {
     return this.assessmentsService.createAssessment(dto);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.ORGANIZER)
   @Post('rounds/:roundId/slots')
-  @ApiOperation({ summary: 'Add a scheduled slot to an assessment round (Admin only)' })
+  @ApiOperation({ summary: 'Add a scheduled slot to an assessment round (Admin & Organizer)' })
   @SwaggerResponse({ status: 201, description: 'Created slot' })
   async createSlot(
     @Param('roundId') roundId: string,
@@ -50,9 +53,28 @@ export class AssessmentsController {
     return this.assessmentsService.createSlot(roundId, dto);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.ORGANIZER)
+  @Patch('slots/:slotId')
+  @ApiOperation({ summary: 'Update a test slot timing or capacity (Admin & Organizer)' })
+  @SwaggerResponse({ status: 200, description: 'Updated slot' })
+  async updateSlot(
+    @Param('slotId') slotId: string,
+    @Body() dto: UpdateSlotDto,
+  ) {
+    return this.assessmentsService.updateSlot(slotId, dto);
+  }
+
+  @Roles(Role.ADMIN, Role.ORGANIZER)
+  @Delete('slots/:slotId')
+  @ApiOperation({ summary: 'Delete a test slot (Admin & Organizer)' })
+  @SwaggerResponse({ status: 200, description: 'Deleted slot response' })
+  async deleteSlot(@Param('slotId') slotId: string) {
+    return this.assessmentsService.deleteSlot(slotId);
+  }
+
+  @Roles(Role.ADMIN, Role.ORGANIZER)
   @Get()
-  @ApiOperation({ summary: 'List all assessments (Admin only)' })
+  @ApiOperation({ summary: 'List all assessments (Admin & Organizer)' })
   async listAll() {
     return this.assessmentsService.listAssessments();
   }

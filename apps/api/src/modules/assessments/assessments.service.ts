@@ -96,6 +96,56 @@ export class AssessmentsService {
     });
   }
 
+  async updateSlot(slotId: string, dto: any) {
+    const slot = await this.prisma.assessmentSlot.findUnique({
+      where: { id: slotId },
+    });
+
+    if (!slot) {
+      throw new NotFoundException('Assessment slot not found');
+    }
+
+    const start = dto.startTime ? new Date(dto.startTime) : slot.startTime;
+    const end = dto.endTime ? new Date(dto.endTime) : slot.endTime;
+
+    if (end <= start) {
+      throw new BadRequestException('Slot endTime must be strictly after startTime');
+    }
+
+    return this.prisma.assessmentSlot.update({
+      where: { id: slotId },
+      data: {
+        ...(dto.slotNumber !== undefined ? { slotNumber: dto.slotNumber } : {}),
+        ...(dto.startTime ? { startTime: start } : {}),
+        ...(dto.endTime ? { endTime: end } : {}),
+        ...(dto.capacity !== undefined ? { capacity: dto.capacity } : {}),
+      },
+    });
+  }
+
+  async deleteSlot(slotId: string) {
+    const slot = await this.prisma.assessmentSlot.findUnique({
+      where: { id: slotId },
+      include: { attempts: true },
+    });
+
+    if (!slot) {
+      throw new NotFoundException('Assessment slot not found');
+    }
+
+    if (slot.attempts.length > 0) {
+      throw new BadRequestException(
+        `Cannot delete slot #${slot.slotNumber} because ${slot.attempts.length} student attempt(s) are registered to it.`,
+      );
+    }
+
+    await this.prisma.assessmentSlot.delete({
+      where: { id: slotId },
+    });
+
+    return { success: true, message: `Slot #${slot.slotNumber} deleted successfully` };
+  }
+
   async listAssessments() {
     return this.prisma.assessment.findMany({
       include: {

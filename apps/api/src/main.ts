@@ -21,6 +21,8 @@ async function bootstrap(): Promise<void> {
     helmet({
       contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
       crossOriginEmbedderPolicy: false,
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+      crossOriginOpenerPolicy: false,
     }),
   );
 
@@ -28,13 +30,43 @@ async function bootstrap(): Promise<void> {
   const cookieSecret = configService.get<string>('COOKIE_SECRET');
   app.use(cookieParser(cookieSecret));
 
-  // 3. Strict CORS
+  // 3. CORS Configuration
   const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:3000');
+  const allowedOrigins = [
+    frontendUrl,
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3001',
+  ].filter(Boolean);
+
   app.enableCors({
-    origin: [frontendUrl, 'http://localhost:3000'],
+    origin: (requestOrigin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      if (!requestOrigin) {
+        return callback(null, true);
+      }
+      if (
+        allowedOrigins.includes(requestOrigin) ||
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin)
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${requestOrigin}`), false);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+      'Origin',
+      'x-csrf-token',
+      'X-CSRF-Token',
+      'cit_csrf',
+    ],
+    exposedHeaders: ['Set-Cookie'],
   });
 
   // 4. API Prefix & Versioning

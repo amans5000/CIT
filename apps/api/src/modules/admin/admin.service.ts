@@ -18,16 +18,38 @@ export class AdminService {
     private readonly authService: AuthService,
   ) {}
 
-  async listUsers(page = 1, limit = 20) {
+  async listUsers(page = 1, limit = 20, search?: string, roleFilter?: Role) {
     const skip = (page - 1) * limit;
 
+    const where: any = {};
+    if (roleFilter) {
+      where.role = roleFilter;
+    }
+    if (search && search.trim()) {
+      const q = search.trim();
+      where.OR = [
+        { email: { contains: q, mode: 'insensitive' } },
+        { profile: { fullName: { contains: q, mode: 'insensitive' } } },
+        { profile: { displayName: { contains: q, mode: 'insensitive' } } },
+        { profile: { instituteName: { contains: q, mode: 'insensitive' } } },
+      ];
+    }
+
     const [total, users] = await Promise.all([
-      this.prisma.user.count(),
+      this.prisma.user.count({ where }),
       this.prisma.user.findMany({
+        where,
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
-        include: { profile: true },
+        include: {
+          profile: true,
+          attempts: {
+            include: { slot: true },
+            orderBy: { createdAt: 'desc' },
+            take: 1,
+          },
+        },
       }),
     ]);
 
@@ -43,8 +65,66 @@ export class AdminService {
         isActive: u.isActive,
         profile: u.profile,
         createdAt: u.createdAt,
+        currentAttempt: u.attempts[0]
+          ? {
+              id: u.attempts[0].id,
+              status: u.attempts[0].status,
+              score: u.attempts[0].score,
+              isQualified: u.attempts[0].isQualified,
+              slot: u.attempts[0].slot
+                ? {
+                    id: u.attempts[0].slot.id,
+                    slotNumber: u.attempts[0].slot.slotNumber,
+                    startTime: u.attempts[0].slot.startTime,
+                    endTime: u.attempts[0].slot.endTime,
+                  }
+                : null,
+            }
+          : null,
       })),
     };
+  }
+
+  async updateAttemptStatus(
+    attemptId: string,
+    status: any,
+    adminUser: AuthenticatedUser,
+    req: Request,
+  ) {
+    const attempt = await this.prisma.assessmentAttempt.findUnique({
+      where: { id: attemptId },
+      include: { user: true, slot: true },
+    });
+
+    if (!attempt) {
+      throw new NotFoundException('Exam attempt not found');
+    }
+
+    const previousStatus = attempt.status;
+
+    const updated = await this.prisma.assessmentAttempt.update({
+      where: { id: attemptId },
+      data: { status },
+      include: { slot: true, user: true },
+    });
+
+    await this.prisma.auditLog.create({
+      data: {
+        userId: adminUser.id,
+        action: 'UPDATE_ATTEMPT_STATUS',
+        resource: `Attempt:${attemptId}`,
+        details: {
+          studentEmail: attempt.user.email,
+          slotNumber: attempt.slot.slotNumber,
+          previousStatus,
+          newStatus: status,
+        },
+        ipAddress: req.ip || null,
+        userAgent: req.headers['user-agent'] || null,
+      },
+    });
+
+    return updated;
   }
 
   async updateUserRole(
@@ -90,7 +170,7 @@ export class AdminService {
     });
 
     this.logger.log(
-      `Admin [${adminUser.email}] changed role of [${targetUser.email}] from ${oldRole} to ${newRole}`,
+      `Staff [${adminUser.email}] changed role of [${targetUser.email}] from ${oldRole} to ${newRole}`,
     );
 
     return {

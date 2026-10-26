@@ -8,7 +8,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspaces",
+    "dev": "concurrently -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
     "dev:services": "docker compose -f docker-compose.dev.yml up -d",
     "dev:services:down": "docker compose -f docker-compose.dev.yml down",
     "dev:api": "npm run dev --workspace=@cit9/api",
@@ -26,6 +26,7 @@
     "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
+    "concurrently": "^10.0.6",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.4.2",
